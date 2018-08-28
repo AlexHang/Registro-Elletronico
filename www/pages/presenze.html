@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+         Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+         For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+
+         <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    -->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="scripts/materialize.min.js"></script>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--Angular js-->
+    <script src="scripts/angular.min.js"></script>
+
+    <!--JSPDF-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.4/jspdf.plugin.autotable.js"></script>
+
+    <script src="https://cdn.rawgit.com/simonbengtsson/jsPDF/requirejs-fix-dist/dist/jspdf.debug.js"></script>
+
+    <script src="https://unpkg.com/jspdf-autotable@2.3.2"></script>
+
+    <script src="scripts/presenze.js"></script>
+
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <title>BlankCordovaApp1</title>
+</head>
+<body ng-app="presenze" ng-controller="presenze_ctrl" ng-init="mesaj='Submit'">
+    <div class="container-fluid" id="container">
+
+        <nav style="background-color:black;"><a href="#" data-target="slide-out" class="sidenav-trigger"  style="display:block" ><i class="material-icons">menu</i></a></nav>
+        <ul id="slide-out" class="sidenav">
+            <li>
+                <!-- <div class="user-view">
+                    <div class="background">
+                        <img src="images/office.jpg">
+                    </div>
+                    <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
+                    <a href="#name"><span class="white-text name">John Doe</span></a>
+                    <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+                </div>-->
+            </li>
+            <li><a href="index.html"><i class="material-icons">home</i>Casa</a></li>
+            <li><div class="divider"></div></li>
+            <li><a class="subheader">Actions</a></li>
+            <li><a id="print_tabel" class="waves-effect" href="export.html" >Esportare la tabella</a></li>
+        </ul>
+        <div>
+            <center>
+                <label>Choose the date</label>
+                <br />
+                <input type="number" name='date' id="datepick" style="width:auto" placeholder="ziua" class="form-control col l2 s2 m2"  ng-model="day" />
+                <input type="number" name='date' id="datepick" style="width:auto" placeholder="luna" class="form-control col l2 s2 m2"  ng-model="month" />
+                <input type="number" name='date' id="datepick" style="width:auto" placeholder="anul" class="form-control col l2 s2 m2"  ng-model="year" />
+                <button class="btn waves-effect waves-light" ng-click="cauta_data()">
+                    Search Date
+                    <i class="material-icons right">send</i>
+                </button>
+            </center>
+            <ul class="collection">
+                <li class="collection-item avatar  modal-trigger" href="#modal_edit" ng-repeat="x in pres['Studenti'] track by $index" ng-click="">
+                    <i class="material-icons circle">person</i>
+                    {{JSON.stringify(x)}}
+                    <span class="title">{{x['Student'].nume}}</span>
+                    <p>
+                        {{x['Student'].prenume}}
+                    </p>
+                   
+                    <a href="#" class="secondary-content">
+                        <div class="switch">
+                            <label>
+                                prezent
+                                <input type="checkbox" ng-model="x.prezent">
+                                <span class="lever"></span>
+                                absent
+                            </label>
+                        </div>
+                        <label class="">
+                            <input type="checkbox" ng-model="x.mancat" />
+                            <span>Mancat</span>
+                        </label>
+                    </a>
+                    {{x.prezent+' '+x.mancat}}
+                    <!--<a href="#!" class="secondary-content">{{x.prezent+' '+x.mancat}}</a>-->
+                </li>
+            </ul>
+            <center>
+                <button class="btn waves-effect waves-light"  ng-click="save_date()">
+                    {{mesaj}}
+                    <i class="material-icons right">send</i>
+                </button>
+            </center>
+            <ul>
+               <!-- <li ng-repeat="y in tabel['prezente']">
+                    zi
+                </li> -->
+            </ul>
+        </div>
+    </div>
+    <script>
+        M.AutoInit();
+    </script>
+</body>
+</html>

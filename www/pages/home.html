@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+         Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+         For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+
+         <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    -->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="scripts/materialize.min.js"></script>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--Angular js-->
+    <script src="scripts/angular.min.js"></script>
+
+    <!--JSPDF-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.4/jspdf.plugin.autotable.js"></script>
+  
+    <script src="https://cdn.rawgit.com/simonbengtsson/jsPDF/requirejs-fix-dist/dist/jspdf.debug.js"></script>
+
+    <script src="https://unpkg.com/jspdf-autotable@2.3.2"></script>
+
+
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <title>BlankCordovaApp1</title>
+</head>
+<body ng-app="tabele" ng-controller="tabel_CTRL" ng-init="anagrafiche=true;">
+
+    <div id="modal_add" class="modal">
+        <div class="modal-content">
+
+            <input type="text" name='name0' placeholder='Nume copil' ng-model="nume" class="form-control" />
+
+            <input type="text" name='name0' placeholder='Prenume copil' ng-model="prenume" class="form-control" />
+
+            <input type="number" min="1" name='telefon' ng-model="telefon" placeholder='Numarul de ore' class="form-control" />
+
+            <input type="date" name='date' class="form-control" ng-model="date1" />
+
+            <input type="email" ng-model="email" placeholder="email" />
+
+            <textarea ng-model="note"></textarea>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat" ng-click="add_copil()">Submit</a>
+        </div>
+    </div>
+
+    <div id="modal_edit" class="modal">
+        <div class="modal-content">
+
+            <input type="text" name='name0' placeholder='Nume copil' ng-model="nume_edit" class="form-control" />
+
+            <input type="number" min="1" max="24" name='ore' ng-model="ore_edit" placeholder='Numarul de ore' class="form-control" />
+
+            <input type="date" name='date' class="form-control" ng-model="date1_edit" />
+
+            
+        </div>
+        <div class="modal-footer">
+
+            <a href="#!" class="modal-close waves-effect waves-green btn red" ng-click="delete_entry()">Delete Entry</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn" ng-click="modify()">Save</a>
+        </div>
+    </div>
+
+
+    <div class="container-fluid" id="container">
+        <nav style="background-color:black;"><a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a></nav>
+        <ul id="slide-out" class="sidenav">
+            <li>
+                <!-- <div class="user-view">
+         <div class="background">
+             <img src="images/office.jpg">
+         </div>
+         <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
+         <a href="#name"><span class="white-text name">John Doe</span></a>
+         <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+     </div>-->
+            </li>
+            <li><a href="#!"><i class="material-icons">cloud</i>Options</a></li>
+            <li><div class="divider"></div></li>
+            <li><a class="subheader">Actions</a></li>
+            <li><a id="print_tabel" class="waves-effect" href="#">Export table</a></li>
+        </ul>
+        
+        <div class="row clearfix">
+
+            <div class="col s12 m12 l12 column">
+                <div class="fixed-action-btn" ng-if="anagrafiche">
+                    <a class="btn-floating btn-large red modal-trigger" href="#modal_add" id="add_entry">
+                        <i class="large material-icons">mode_edit</i>
+                    </a>
+                    <!--<ul>
+                    <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+                    <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+                    <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+                    <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+                </ul>-->
+                </div>
+
+
+                <table class="table centered striped" id="tab_logic">
+                    <thead>
+
+                        <tr>
+                            <th class="text-center">
+                                #
+                            </th>
+                            <th class="text-center">
+                                Nume
+                            </th>
+                            <th class="text-center">
+                                Ore
+                            </th>
+                            <th class="text-center">
+                                Ziua
+                            </th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr ng-repeat="x in tabel track by $index" ng-if="x.render">
+                            <td>
+                                {{$index+1}}
+                            </td>
+                            <td>
+                                {{x.name}}
+                            </td>
+                            <td>
+                                {{x.ore}}
+                            </td>
+                            <td>
+                                {{x.data}}
+                            </td>
+                            <td>
+                                <a class="waves-effect waves-light btn modal-trigger" href="#modal_edit" ng-click="click_mofify($index)"><i class="material-icons">edit</i></a>
+
+                            </td>
+                            <td></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>
